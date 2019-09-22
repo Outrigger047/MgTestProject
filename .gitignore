@@ -56,3 +56,6 @@ monodroid*.msi
 /CompiledContent/Windows/IgnoreMe.dll
 *.cachefile
 *.dll
+
+#Other MonoGame things
+packages/
