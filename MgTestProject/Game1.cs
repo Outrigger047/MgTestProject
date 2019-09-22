@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using PS4Mono;
 
 namespace MgTestProject
 {
@@ -13,12 +14,19 @@ namespace MgTestProject
         /// <summary>
         /// Move amount per frame
         /// </summary>
-        private const int maxMoveDist = 14;
+        private const int maxMoveDist = 9;
+
+        private readonly Vector2 diagInfoPos = new Vector2(5, 5);
 
         private GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;
         private Texture2D rect;
         private Vector2 position;
+        private SpriteFont arial;
+
+        // Controller left stick position
+        private float lsX;
+        private float lsY;
 
         public Game1()
         {
@@ -34,9 +42,22 @@ namespace MgTestProject
         /// </summary>
         protected override void Initialize()
         {
+            // Controller
+            Ps4Input.Initialize(this);
+
             // Start position
             position = new Vector2(20, 20);
-            
+
+            rect = new Texture2D(graphics.GraphicsDevice, 30, 30);
+
+            Color[] data = new Color[30 * 30];
+            for (int i = 0; i < data.Length; ++i)
+            {
+                data[i] = Color.White;
+            }
+
+            rect.SetData(data);
+
             base.Initialize();
         }
 
@@ -48,8 +69,8 @@ namespace MgTestProject
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            
 
+            arial = Content.Load<SpriteFont>("arial");
         }
 
         /// <summary>
@@ -77,7 +98,7 @@ namespace MgTestProject
             }
 
             DoKeyboardMovement(kbState);
-            DoGamepadMovement(gpState);
+            DoGamepadMovement();
 
             base.Update(gameTime);
         }
@@ -92,17 +113,11 @@ namespace MgTestProject
 
             spriteBatch.Begin();
 
-            rect = new Texture2D(graphics.GraphicsDevice, 30, 30);
+            // Character
+            spriteBatch.Draw(rect, position, Color.White);
 
-            Color[] data = new Color[30 * 30];
-            for (int i = 0; i < data.Length; ++i)
-            {
-                data[i] = Color.White;
-            }
-            rect.SetData(data);
-
-            Vector2 coor = position;
-            spriteBatch.Draw(rect, coor, Color.White);
+            // Diagnostic info
+            spriteBatch.DrawString(arial, $"{lsX}, {lsY}", diagInfoPos, Color.White);
 
             spriteBatch.End();
 
@@ -166,14 +181,52 @@ namespace MgTestProject
             }
         }
 
-        private void DoGamepadMovement(GamePadState gpState)
+        private void DoGamepadMovement()
         {
+            var bounds = GraphicsDevice.Viewport.Bounds;
 
-        }
+            // Left stick snapshot
+            lsX = Ps4Input.Ps4RawAxis(0, Axis.LeftX);
+            lsY = Ps4Input.Ps4RawAxis(0, Axis.LeftY);
 
-        private void DoDiagnosticInfo()
-        {
+            // Left stick deadzone
+            if (Math.Abs(lsX) < 0.09)
+            {
+                lsX = 0;
+            }
 
+            if (Math.Abs(lsY) < 0.09)
+            {
+                lsY = 0;
+            }
+
+            var newPosX = position.X + lsX * maxMoveDist;
+            if (newPosX + rect.Width > bounds.Width)
+            {
+                position.X = bounds.Width - rect.Width;
+            }
+            else if (newPosX < 0)
+            {
+                position.X = 0;
+            }
+            else
+            {
+                position.X = newPosX;
+            }
+
+            var newPosY = position.Y + lsY * maxMoveDist;
+            if (newPosY + rect.Height > bounds.Height)
+            {
+                position.Y = bounds.Height - rect.Height;
+            }
+            else if (newPosY < 0)
+            {
+                position.Y = 0;
+            }
+            else
+            {
+                position.Y = newPosY;
+            }
         }
     }
 }
