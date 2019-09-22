@@ -1,7 +1,7 @@
 ﻿using System;
 
 namespace MgTestProject
-    {
+{
 #if WINDOWS || LINUX
     /// <summary>
     /// The main class.
@@ -19,4 +19,4 @@ namespace MgTestProject
         }
     }
 #endif
-    }
+}
