@@ -31,6 +31,9 @@ namespace MgTestProject
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
+            graphics.PreferredBackBufferWidth = 1280;
+            graphics.PreferredBackBufferHeight = 720;
+
             Content.RootDirectory = "Content";
         }
 
@@ -117,7 +120,12 @@ namespace MgTestProject
             spriteBatch.Draw(rect, position, Color.White);
 
             // Diagnostic info
-            spriteBatch.DrawString(arial, $"{lsX}, {lsY}", diagInfoPos, Color.White);
+            if (Ps4Input.Ps4IsConnected(0))
+            {
+                spriteBatch.DrawString(arial, $"{lsX}, {lsY}", diagInfoPos, Color.White);
+            }
+            
+            spriteBatch.DrawString(arial, $"{position.X}, {position.Y}", new Vector2(position.X, position.Y + 30), Color.White);
 
             spriteBatch.End();
 
@@ -128,13 +136,21 @@ namespace MgTestProject
         {
             var bounds = GraphicsDevice.Viewport.Bounds;
 
+            const double speedMultiplier = 0.5;
+            int actualMoveDist = maxMoveDist;
+
+            if (kbState.IsKeyDown(Keys.LeftShift) || kbState.IsKeyDown(Keys.RightShift))
+                {
+                actualMoveDist = Convert.ToInt32(Math.Ceiling(actualMoveDist * speedMultiplier));
+                }
+
             // Y-axis movement and collision detection
             if (kbState.IsKeyDown(Keys.W) || kbState.IsKeyDown(Keys.Up))
             {
                 if (position.Y <= bounds.Height)
                 {
                     var distance = position.Y;
-                    position.Y -= distance > maxMoveDist ? maxMoveDist : distance;
+                    position.Y -= distance > actualMoveDist ? actualMoveDist : distance;
                 }
                 else
                 {
@@ -146,7 +162,7 @@ namespace MgTestProject
                 if (position.Y + rect.Height <= bounds.Height)
                 {
                     var distance = Math.Abs((position.Y + rect.Height) - bounds.Height);
-                    position.Y += distance > maxMoveDist ? maxMoveDist : distance;
+                    position.Y += distance > actualMoveDist ? actualMoveDist : distance;
                 }
                 else
                 {
@@ -160,7 +176,7 @@ namespace MgTestProject
                 if (position.X + rect.Width <= bounds.Width)
                 {
                     var distance = position.X;
-                    position.X -= distance > maxMoveDist ? maxMoveDist : distance;
+                    position.X -= distance > actualMoveDist ? actualMoveDist : distance;
                 }
                 else
                 {
@@ -172,7 +188,7 @@ namespace MgTestProject
                 if (position.X + rect.Width <= bounds.Width)
                 {
                     var distance = Math.Abs((position.X + rect.Width) - bounds.Width);
-                    position.X += distance > maxMoveDist ? maxMoveDist : distance;
+                    position.X += distance > actualMoveDist ? actualMoveDist : distance;
                 }
                 else
                 {
