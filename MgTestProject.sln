@@ -6,9 +6,12 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MgTestProject", "MgTestProject\MgTestProject.csproj", "{0C3C1AFE-D1EA-434F-85B6-AA251028696E}"
 	ProjectSection(ProjectDependencies) = postProject
 		{003E9E7E-9C02-48BA-9B68-62F42ADBD5F5} = {003E9E7E-9C02-48BA-9B68-62F42ADBD5F5}
+		{39AD1482-1881-4852-A05D-DC61B0D3446A} = {39AD1482-1881-4852-A05D-DC61B0D3446A}
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PS4Mono", "..\PS4Mono\PS4Mono\PS4Mono.csproj", "{003E9E7E-9C02-48BA-9B68-62F42ADBD5F5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Primitives2D", "..\MonoGame.Primitives2D\Primitives2D.csproj", "{39AD1482-1881-4852-A05D-DC61B0D3446A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -32,6 +35,14 @@ Global
 		{003E9E7E-9C02-48BA-9B68-62F42ADBD5F5}.Release|Any CPU.Build.0 = Release|Any CPU
 		{003E9E7E-9C02-48BA-9B68-62F42ADBD5F5}.Release|x86.ActiveCfg = Release|Any CPU
 		{003E9E7E-9C02-48BA-9B68-62F42ADBD5F5}.Release|x86.Build.0 = Release|Any CPU
+		{39AD1482-1881-4852-A05D-DC61B0D3446A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{39AD1482-1881-4852-A05D-DC61B0D3446A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{39AD1482-1881-4852-A05D-DC61B0D3446A}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{39AD1482-1881-4852-A05D-DC61B0D3446A}.Debug|x86.Build.0 = Debug|Any CPU
+		{39AD1482-1881-4852-A05D-DC61B0D3446A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{39AD1482-1881-4852-A05D-DC61B0D3446A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{39AD1482-1881-4852-A05D-DC61B0D3446A}.Release|x86.ActiveCfg = Release|Any CPU
+		{39AD1482-1881-4852-A05D-DC61B0D3446A}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

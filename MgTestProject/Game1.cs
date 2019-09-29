@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using MonoGame;
 using PS4Mono;
 
 namespace MgTestProject
@@ -20,9 +23,12 @@ namespace MgTestProject
 
         private GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;
-        private Texture2D rect;
-        private Vector2 position;
+        private Texture2D playerRectangle;
+        private Vector2 playerPos;
         private SpriteFont arial;
+        private List<WorldShape> world = new List<WorldShape>();
+        private List<WorldShape> worldRects = new List<WorldShape>();
+        private List<WorldShape> worldEllipses = new List<WorldShape>();
 
         // Controller left stick position
         private float lsX;
@@ -31,8 +37,8 @@ namespace MgTestProject
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
-            graphics.PreferredBackBufferWidth = 1280;
-            graphics.PreferredBackBufferHeight = 720;
+            graphics.PreferredBackBufferWidth = 1920;
+            graphics.PreferredBackBufferHeight = 1080;
 
             Content.RootDirectory = "Content";
         }
@@ -48,18 +54,33 @@ namespace MgTestProject
             // Controller
             Ps4Input.Initialize(this);
 
-            // Start position
-            position = new Vector2(20, 20);
-
-            rect = new Texture2D(graphics.GraphicsDevice, 30, 30);
-
-            Color[] data = new Color[30 * 30];
-            for (int i = 0; i < data.Length; ++i)
+            // Player initialization
+            playerPos = new Vector2(20, 20);
+            playerRectangle = new Texture2D(graphics.GraphicsDevice, 30, 30);
+            Color[] playerColorData = new Color[30 * 30];
+            for (int i = 0; i < playerColorData.Length; ++i)
             {
-                data[i] = Color.White;
+                playerColorData[i] = Color.White;
             }
 
-            rect.SetData(data);
+            playerRectangle.SetData(playerColorData);
+
+            // World geometry
+            var geometries = new List<WorldShapeGeometry>
+            {
+                new WorldShapeGeometry(new Vector2(400, 300), 65, 15, Shapes.Rectangle, 0, Color.DarkGray),
+                new WorldShapeGeometry(new Vector2(800, 300), 275, 80, Shapes.Rectangle, (float)Math.PI / 2, Color.DarkGray),
+                new WorldShapeGeometry(new Vector2(1000, 600), 300, 300, Shapes.Ellipse, 0, Color.Blue)
+            };
+
+            foreach (var geometry in geometries)
+            {
+                world.Add(new WorldShape(geometry, graphics.GraphicsDevice));
+            }
+
+            // Filtered collections of world geometry based on shape type
+            worldRects = world.Where(x => x.Geometry.ShapeType == Shapes.Rectangle).ToList();
+            worldEllipses = world.Where(x => x.Geometry.ShapeType == Shapes.Ellipse).ToList();
 
             base.Initialize();
         }
@@ -116,8 +137,24 @@ namespace MgTestProject
 
             spriteBatch.Begin();
 
+            // Draw world geometry - Rectangles
+            foreach (var rect in worldRects)
+            {
+                var geo = rect.Geometry;
+                spriteBatch.FillRectangle(
+                    new Rectangle((int)geo.Position.X, (int)geo.Position.Y, geo.Width, geo.Height), 
+                    geo.DrawColor, geo.RotAngle);
+            }
+
+            // Draw world geometry - Ellipses
+            foreach (var ellipse in worldEllipses)
+            {
+                var geo = ellipse.Geometry;
+                spriteBatch.DrawCircle(new Vector2(geo.Position.X, geo.Position.Y), geo.Height / 2, 40, geo.DrawColor);
+            }
+
             // Character
-            spriteBatch.Draw(rect, position, Color.White);
+            spriteBatch.Draw(playerRectangle, playerPos, Color.White);
 
             // Diagnostic info
             if (Ps4Input.Ps4IsConnected(0))
@@ -125,7 +162,7 @@ namespace MgTestProject
                 spriteBatch.DrawString(arial, $"{lsX}, {lsY}", diagInfoPos, Color.White);
             }
             
-            spriteBatch.DrawString(arial, $"{position.X}, {position.Y}", new Vector2(position.X, position.Y + 30), Color.White);
+            spriteBatch.DrawString(arial, $"{playerPos.X}, {playerPos.Y}", new Vector2(playerPos.X, playerPos.Y + 30), Color.White);
 
             spriteBatch.End();
 
@@ -147,52 +184,52 @@ namespace MgTestProject
             // Y-axis movement and collision detection
             if (kbState.IsKeyDown(Keys.W) || kbState.IsKeyDown(Keys.Up))
             {
-                if (position.Y <= bounds.Height)
+                if (playerPos.Y <= bounds.Height)
                 {
-                    var distance = position.Y;
-                    position.Y -= distance > actualMoveDist ? actualMoveDist : distance;
+                    var distance = playerPos.Y;
+                    playerPos.Y -= distance > actualMoveDist ? actualMoveDist : distance;
                 }
                 else
                 {
-                    position.Y = 0;
+                    playerPos.Y = 0;
                 }
             }
             else if (kbState.IsKeyDown(Keys.S) || kbState.IsKeyDown(Keys.Down))
             {
-                if (position.Y + rect.Height <= bounds.Height)
+                if (playerPos.Y + playerRectangle.Height <= bounds.Height)
                 {
-                    var distance = Math.Abs((position.Y + rect.Height) - bounds.Height);
-                    position.Y += distance > actualMoveDist ? actualMoveDist : distance;
+                    var distance = Math.Abs((playerPos.Y + playerRectangle.Height) - bounds.Height);
+                    playerPos.Y += distance > actualMoveDist ? actualMoveDist : distance;
                 }
                 else
                 {
-                    position.Y = bounds.Height - rect.Height - 1;
+                    playerPos.Y = bounds.Height - playerRectangle.Height - 1;
                 }
             }
 
             // X-axis movement and collision detection
             if (kbState.IsKeyDown(Keys.A) || kbState.IsKeyDown(Keys.Left))
             {
-                if (position.X + rect.Width <= bounds.Width)
+                if (playerPos.X + playerRectangle.Width <= bounds.Width)
                 {
-                    var distance = position.X;
-                    position.X -= distance > actualMoveDist ? actualMoveDist : distance;
+                    var distance = playerPos.X;
+                    playerPos.X -= distance > actualMoveDist ? actualMoveDist : distance;
                 }
                 else
                 {
-                    position.X = 0;
+                    playerPos.X = 0;
                 }
             }
             else if (kbState.IsKeyDown(Keys.D) || kbState.IsKeyDown(Keys.Right))
             {
-                if (position.X + rect.Width <= bounds.Width)
+                if (playerPos.X + playerRectangle.Width <= bounds.Width)
                 {
-                    var distance = Math.Abs((position.X + rect.Width) - bounds.Width);
-                    position.X += distance > actualMoveDist ? actualMoveDist : distance;
+                    var distance = Math.Abs((playerPos.X + playerRectangle.Width) - bounds.Width);
+                    playerPos.X += distance > actualMoveDist ? actualMoveDist : distance;
                 }
                 else
                 {
-                    position.X = bounds.Width - rect.Width - 1;
+                    playerPos.X = bounds.Width - playerRectangle.Width - 1;
                 }
             }
         }
@@ -216,32 +253,32 @@ namespace MgTestProject
                 lsY = 0;
             }
 
-            var newPosX = position.X + lsX * maxMoveDist;
-            if (newPosX + rect.Width > bounds.Width)
+            var newPosX = playerPos.X + lsX * maxMoveDist;
+            if (newPosX + playerRectangle.Width > bounds.Width)
             {
-                position.X = bounds.Width - rect.Width;
+                playerPos.X = bounds.Width - playerRectangle.Width;
             }
             else if (newPosX < 0)
             {
-                position.X = 0;
+                playerPos.X = 0;
             }
             else
             {
-                position.X = newPosX;
+                playerPos.X = Convert.ToSingle(Math.Ceiling(Convert.ToDouble(newPosX)));
             }
 
-            var newPosY = position.Y + lsY * maxMoveDist;
-            if (newPosY + rect.Height > bounds.Height)
+            var newPosY = playerPos.Y + lsY * maxMoveDist;
+            if (newPosY + playerRectangle.Height > bounds.Height)
             {
-                position.Y = bounds.Height - rect.Height;
+                playerPos.Y = bounds.Height - playerRectangle.Height;
             }
             else if (newPosY < 0)
             {
-                position.Y = 0;
+                playerPos.Y = 0;
             }
             else
             {
-                position.Y = newPosY;
+                playerPos.Y = Convert.ToSingle(Math.Ceiling(Convert.ToDouble(newPosY)));
             }
         }
     }
