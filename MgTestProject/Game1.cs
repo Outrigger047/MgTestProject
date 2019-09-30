@@ -39,6 +39,7 @@ namespace MgTestProject
             graphics = new GraphicsDeviceManager(this);
             graphics.PreferredBackBufferWidth = 1920;
             graphics.PreferredBackBufferHeight = 1080;
+            graphics.IsFullScreen = true;
 
             Content.RootDirectory = "Content";
         }
@@ -75,7 +76,14 @@ namespace MgTestProject
                 new WorldShapeGeometry(hsOrig, 150, hsWallWidth, Shapes.Rectangle, 0, Color.DarkGray),
                 new WorldShapeGeometry(new Vector2(hsOrig.X + 200, hsOrig.Y), 300, hsWallWidth, Shapes.Rectangle, 0, Color.DarkGray),
                 new WorldShapeGeometry(new Vector2(hsOrig.X + 500, hsOrig.Y), hsWallWidth, 600, Shapes.Rectangle, 0, Color.DarkGray),
-                new WorldShapeGeometry(new Vector2(hsOrig.X + 200 + hsWallWidth, hsOrig.Y + 600), 300,  hsWallWidth, Shapes.Rectangle, 0, Color.DarkGray)
+                new WorldShapeGeometry(new Vector2(hsOrig.X + 200 + hsWallWidth, hsOrig.Y + 600), 300,  hsWallWidth, Shapes.Rectangle, 0, Color.DarkGray),
+                new WorldShapeGeometry(new Vector2(hsOrig.X, hsOrig.Y + hsWallWidth), hsWallWidth, 450, Shapes.Rectangle, 0, Color.DarkGray),
+                new WorldShapeGeometry(new Vector2(hsOrig.X, hsOrig.Y + hsWallWidth + 450), 200, hsWallWidth, Shapes.Rectangle, 0, Color.DarkGray),
+                new WorldShapeGeometry(new Vector2(hsOrig.X + 200, hsOrig.Y + hsWallWidth + 450), hsWallWidth, 150, Shapes.Rectangle, 0, Color.DarkGray),
+
+                // House floor
+                new WorldShapeGeometry(new Vector2(hsOrig.X + hsWallWidth, hsOrig.Y + hsWallWidth), 485, 450, Shapes.Rectangle, 0, Color.SaddleBrown, passable: true),
+                new WorldShapeGeometry(new Vector2(hsOrig.X + 215, hsOrig.Y + 465), 285, 135, Shapes.Rectangle, 0, Color.SaddleBrown, passable: true)
             };
 
             foreach (var geometry in geometries)
