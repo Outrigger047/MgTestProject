@@ -17,7 +17,7 @@ namespace MgTestProject
         /// <summary>
         /// Move amount per frame
         /// </summary>
-        private const int maxMoveDist = 9;
+        private const int maxMoveDist = 7;
 
         private readonly Vector2 diagInfoPos = new Vector2(5, 5);
 
@@ -66,11 +66,16 @@ namespace MgTestProject
             playerRectangle.SetData(playerColorData);
 
             // World geometry
+            const int hsWallWidth = 15;
+            Vector2 hsOrig = new Vector2(400, 300);
+
             var geometries = new List<WorldShapeGeometry>
             {
-                new WorldShapeGeometry(new Vector2(400, 300), 65, 15, Shapes.Rectangle, 0, Color.DarkGray),
-                new WorldShapeGeometry(new Vector2(800, 300), 275, 80, Shapes.Rectangle, (float)Math.PI / 2, Color.DarkGray),
-                new WorldShapeGeometry(new Vector2(1000, 600), 300, 300, Shapes.Ellipse, 0, Color.Blue)
+                // House exterior walls
+                new WorldShapeGeometry(hsOrig, 150, hsWallWidth, Shapes.Rectangle, 0, Color.DarkGray),
+                new WorldShapeGeometry(new Vector2(hsOrig.X + 200, hsOrig.Y), 300, hsWallWidth, Shapes.Rectangle, 0, Color.DarkGray),
+                new WorldShapeGeometry(new Vector2(hsOrig.X + 500, hsOrig.Y), hsWallWidth, 600, Shapes.Rectangle, 0, Color.DarkGray),
+                new WorldShapeGeometry(new Vector2(hsOrig.X + 200 + hsWallWidth, hsOrig.Y + 600), 300,  hsWallWidth, Shapes.Rectangle, 0, Color.DarkGray)
             };
 
             foreach (var geometry in geometries)

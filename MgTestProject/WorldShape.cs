@@ -17,7 +17,7 @@ namespace MgTestProject
             Color[] colorData = new Color[Geometry.Width * Geometry.Height];
             for (int i = 0; i < colorData.Length; i++)
             {
-                colorData[i] = Color.DarkSlateGray;
+                colorData[i] = geometry.DrawColor;
             }
 
             Texture.SetData(colorData);
