@@ -69,9 +69,11 @@ namespace MgTestProject
             // World geometry
             const int hsWallWidth = 15;
             Vector2 hsOrig = new Vector2(400, 300);
+            Vector2 leftShrubCoord = new Vector2(430, 275);
 
             var geometries = new List<WorldShapeGeometry>
             {
+#region Hard-coded geometry
                 // House exterior walls
                 new WorldShapeGeometry(hsOrig, 150, hsWallWidth, Shapes.Rectangle, 0, Color.DarkGray),
                 new WorldShapeGeometry(new Vector2(hsOrig.X + 200, hsOrig.Y), 300, hsWallWidth, Shapes.Rectangle, 0, Color.DarkGray),
@@ -83,7 +85,18 @@ namespace MgTestProject
 
                 // House floor
                 new WorldShapeGeometry(new Vector2(hsOrig.X + hsWallWidth, hsOrig.Y + hsWallWidth), 485, 450, Shapes.Rectangle, 0, Color.SaddleBrown, passable: true),
-                new WorldShapeGeometry(new Vector2(hsOrig.X + 215, hsOrig.Y + 465), 285, 135, Shapes.Rectangle, 0, Color.SaddleBrown, passable: true)
+                new WorldShapeGeometry(new Vector2(hsOrig.X + 215, hsOrig.Y + 465), 285, 135, Shapes.Rectangle, 0, Color.SaddleBrown, passable: true),
+
+                // Shrubs, front left
+                new WorldShapeGeometry(leftShrubCoord, 30, 30, Shapes.Ellipse, 0, Color.DarkGreen),
+                new WorldShapeGeometry(new Vector2(leftShrubCoord.X + 35, leftShrubCoord.Y), 30, 30, Shapes.Ellipse, 0, Color.DarkGreen),
+                new WorldShapeGeometry(new Vector2(leftShrubCoord.X + 70, leftShrubCoord.Y), 30, 30, Shapes.Ellipse, 0, Color.DarkGreen),
+
+                // Shrubs, front right
+                new WorldShapeGeometry(new Vector2(leftShrubCoord.X + 220, leftShrubCoord.Y), 30, 30, Shapes.Ellipse, 0, Color.DarkGreen),
+                new WorldShapeGeometry(new Vector2(leftShrubCoord.X + 255, leftShrubCoord.Y), 30, 30, Shapes.Ellipse, 0, Color.DarkGreen),
+                new WorldShapeGeometry(new Vector2(leftShrubCoord.X + 290, leftShrubCoord.Y), 30, 30, Shapes.Ellipse, 0, Color.DarkGreen),
+#endregion
             };
 
             foreach (var geometry in geometries)
