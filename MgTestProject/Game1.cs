@@ -100,7 +100,10 @@ namespace MgTestProject
                 // River
                 new WorldShapeGeometry(new Vector2(1600, -20), 65, 450, Shapes.Rectangle, MathHelper.ToRadians(20), Color.DarkBlue),
                 new WorldShapeGeometry(new Vector2(1450, 400), 65, 500, Shapes.Rectangle, MathHelper.ToRadians(5), Color.DarkBlue),
-                new WorldShapeGeometry(new Vector2(1407, 898), 65, 700, Shapes.Rectangle, MathHelper.ToRadians(2), Color.DarkBlue)
+                new WorldShapeGeometry(new Vector2(1407, 898), 65, 700, Shapes.Rectangle, MathHelper.ToRadians(2), Color.DarkBlue),
+
+                // Bridge
+                new WorldShapeGeometry(new Vector2(1400, 500), 150, 75, Shapes.Rectangle, 0, Color.Brown)
 #endregion
             };
 
