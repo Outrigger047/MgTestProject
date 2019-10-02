@@ -96,6 +96,9 @@ namespace MgTestProject
                 new WorldShapeGeometry(new Vector2(leftShrubCoord.X + 220, leftShrubCoord.Y), 30, 30, Shapes.Ellipse, 0, Color.DarkGreen),
                 new WorldShapeGeometry(new Vector2(leftShrubCoord.X + 255, leftShrubCoord.Y), 30, 30, Shapes.Ellipse, 0, Color.DarkGreen),
                 new WorldShapeGeometry(new Vector2(leftShrubCoord.X + 290, leftShrubCoord.Y), 30, 30, Shapes.Ellipse, 0, Color.DarkGreen),
+
+                // River
+                new WorldShapeGeometry(new Vector2(1600, -20), 65, 450, Shapes.Rectangle, MathHelper.ToRadians(20), Color.Blue)
 #endregion
             };
 
@@ -203,9 +206,9 @@ namespace MgTestProject
             int actualMoveDist = maxMoveDist;
 
             if (kbState.IsKeyDown(Keys.LeftShift) || kbState.IsKeyDown(Keys.RightShift))
-                {
+            {
                 actualMoveDist = Convert.ToInt32(Math.Ceiling(actualMoveDist * speedMultiplier));
-                }
+            }
 
             // Y-axis movement and collision detection
             if (kbState.IsKeyDown(Keys.W) || kbState.IsKeyDown(Keys.Up))
