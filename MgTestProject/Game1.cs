@@ -98,7 +98,9 @@ namespace MgTestProject
                 new WorldShapeGeometry(new Vector2(leftShrubCoord.X + 290, leftShrubCoord.Y), 30, 30, Shapes.Ellipse, 0, Color.DarkGreen),
 
                 // River
-                new WorldShapeGeometry(new Vector2(1600, -20), 65, 450, Shapes.Rectangle, MathHelper.ToRadians(20), Color.Blue)
+                new WorldShapeGeometry(new Vector2(1600, -20), 65, 450, Shapes.Rectangle, MathHelper.ToRadians(20), Color.DarkBlue),
+                new WorldShapeGeometry(new Vector2(1450, 400), 65, 500, Shapes.Rectangle, MathHelper.ToRadians(5), Color.DarkBlue),
+                new WorldShapeGeometry(new Vector2(1407, 898), 65, 700, Shapes.Rectangle, MathHelper.ToRadians(2), Color.DarkBlue)
 #endregion
             };
 
