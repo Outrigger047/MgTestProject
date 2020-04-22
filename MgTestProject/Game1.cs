@@ -39,7 +39,7 @@ namespace MgTestProject
             graphics = new GraphicsDeviceManager(this);
             graphics.PreferredBackBufferWidth = 1920;
             graphics.PreferredBackBufferHeight = 1080;
-            graphics.IsFullScreen = true;
+            graphics.IsFullScreen = false;
 
             Content.RootDirectory = "Content";
         }
@@ -103,7 +103,7 @@ namespace MgTestProject
                 new WorldShapeGeometry(new Vector2(1407, 898), 65, 700, Shapes.Rectangle, MathHelper.ToRadians(2), Color.DarkBlue),
 
                 // Bridge
-                new WorldShapeGeometry(new Vector2(1400, 500), 150, 75, Shapes.Rectangle, 0, Color.Brown)
+                new WorldShapeGeometry(new Vector2(1400, 500), 150, 75, Shapes.Rectangle, 0, Color.Brown, passable: true)
 #endregion
             };
 
