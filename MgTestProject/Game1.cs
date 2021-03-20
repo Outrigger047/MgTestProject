@@ -36,10 +36,12 @@ namespace MgTestProject
 
         public Game1()
         {
-            graphics = new GraphicsDeviceManager(this);
-            graphics.PreferredBackBufferWidth = 1920;
-            graphics.PreferredBackBufferHeight = 1080;
-            graphics.IsFullScreen = false;
+            graphics = new GraphicsDeviceManager(this)
+            {
+                PreferredBackBufferWidth = 1920,
+                PreferredBackBufferHeight = 1080,
+                IsFullScreen = false
+            };
 
             Content.RootDirectory = "Content";
         }
@@ -270,6 +272,7 @@ namespace MgTestProject
 
         private void DoGamepadMovement()
         {
+            const double deadzone = 0.09;
             var bounds = GraphicsDevice.Viewport.Bounds;
 
             // Left stick snapshot
@@ -277,12 +280,12 @@ namespace MgTestProject
             lsY = Ps4Input.Ps4RawAxis(0, Axis.LeftY);
 
             // Left stick deadzone
-            if (Math.Abs(lsX) < 0.09)
+            if (Math.Abs(lsX) < deadzone)
             {
                 lsX = 0;
             }
 
-            if (Math.Abs(lsY) < 0.09)
+            if (Math.Abs(lsY) < deadzone)
             {
                 lsY = 0;
             }
